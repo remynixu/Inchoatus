@@ -8,7 +8,7 @@
             "command": "powershell",
             "args": [
                 "-Command",
-                "if (Test-Path 'build_debug') { Remove-Item -Recurse -Force 'build_debug'}"
+                "if (Test-Path 'build') { Remove-Item -Recurse -Force 'build'}"
             ],
             "presentation": {
                 "reveal": "silent",
@@ -21,10 +21,8 @@
             "command": "cmake",
             "args": [
                 "-S", "${workspaceFolder}\\.",
-                "-B", "${workspaceFolder}\\build_debug",
+                "-B", "${workspaceFolder}\\build",
                 "-G", "MinGW Makefiles",
-                "-DCMAKE_MAKE_PROGRAM=C:\\raylib\\w64devkit\\bin\\make.exe",
-                "-DCMAKE_C_COMPILER=C:\\raylib\\w64devkit\\bin\\gcc.exe",
                 "-DCMAKE_BUILD_TYPE=Debug"
             ],
             "dependsOn": [
@@ -32,23 +30,25 @@
             ]
         },
         {
-            "label": "2. CMake Build (Debug)",
+            "label": "PRELAUNCH",
             "type": "shell",
             "command": "cmake",
             "args": [
-                "--build", "build_debug", "-j2"
+                "--build", "build", "-j2"
             ],
             "dependsOn": [
                 "1. CMake Configure (Debug)"
             ]
         },
+
+        /*
         {
             "label": "2.1 Copy Assets (Debug)",
             "type": "shell",
             "command": "powershell",
             "args": [
                 "-Command",
-                "Copy-Item -Path 'src/assets' -Destination 'build_debug' -Recurse -Force"
+                "Copy-Item -Path 'src/assets' -Destination 'build' -Recurse -Force"
             ],
             "dependsOn":[
                 "2. CMake Build (Debug)"
@@ -58,6 +58,7 @@
                 "panel": "shared"
             }
         },
+        */
 
         /* RELEASE */
         {
@@ -66,7 +67,7 @@
             "command": "powershell",
             "args": [
                 "-Command",
-                "if (Test-Path 'build_release') { Remove-Item -Recurse -Force 'build_release'}; if (Test-Path 'Arundel.zip' -PathType Leaf) { Remove-Item -Force 'Arundel.zip' }; if (Test-Path 'Arundel') { Remove-Item -Force 'Arundel'}"
+                "if (Test-Path 'build') { Remove-Item -Recurse -Force 'build'}; if (Test-Path 'Arundel.zip' -PathType Leaf) { Remove-Item -Force 'Arundel.zip' }; if (Test-Path 'Arundel') { Remove-Item -Force 'Arundel'}"
             ],
             "presentation": {
                 "reveal": "silent",
@@ -79,10 +80,8 @@
             "command": "cmake",
             "args": [
                 "-S", "${workspaceFolder}\\.",
-                "-B", "${workspaceFolder}\\build_release",
+                "-B", "${workspaceFolder}\\build",
                 "-G", "MinGW Makefiles",
-                "-DCMAKE_MAKE_PROGRAM=C:\\raylib\\w64devkit\\bin\\make.exe",
-                "-DCMAKE_C_COMPILER=C:\\raylib\\w64devkit\\bin\\gcc.exe",
                 "-DCMAKE_BUILD_TYPE=Release"
             ],
             "dependsOn": [
@@ -94,19 +93,37 @@
             "type": "shell",
             "command": "cmake",
             "args": [
-                "--build", "build_release", "-j2"
+                "--build", "build", "-j2"
             ],
             "dependsOn": [
                 "1. CMake Configure (Release)"
             ]
         },
         {
+            "label": "3. Package Playable Zip",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Compress-Archive -Path 'build/Inchoatus.exe' -DestinationPath 'Inchoatus.zip' -Force"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true // Ctrl+Shift+B
+            },
+            "dependsOn": [
+                "2. CMake Build (Release)"
+            ]
+        }
+
+        /*
+        {
             "label": "2.1 Copy Assets (Release)",
             "type": "shell",
             "command": "powershell",
             "args": [
                 "-Command",
-                "Copy-Item -Path 'src/assets' -Destination 'build_release' -Recurse -Force"
+                "Copy-Item -Path 'src/assets' -Destination 'build' -Recurse -Force"
             ],
             "dependsOn": [
                 "2. CMake Build (Release)"
@@ -134,7 +151,7 @@
             "command": "powershell",
             "args": [
                 "-Command",
-                "Move-Item -Path 'build_release/Arundel.exe', 'build_release/assets' -Destination 'Arundel' -Force"
+                "Move-Item -Path 'build/Arundel.exe', 'build/assets' -Destination 'Arundel' -Force"
             ],
             "dependsOn": [
                 "2.2 Make ZIP's dir (Release)"
@@ -156,5 +173,6 @@
                 "2.3 Move To Dir (Release)"
             ]
         }
+        */
     ]
 }
