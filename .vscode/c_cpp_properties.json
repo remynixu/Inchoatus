@@ -3,8 +3,7 @@
         {
             "name": "windows",
             "includePath": [
-                "${workspaceFolder}/**",
-                "C:/raylib/raylib/src"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "C:/raylib/w64devkit/bin/gcc.exe",

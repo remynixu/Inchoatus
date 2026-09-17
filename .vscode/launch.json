@@ -2,18 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Raylib Game",
+            "name": "Inchoatus",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build_debug/Inchoatus.exe",
+            "program": "${workspaceFolder}/build/Inchoatus.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build_debug",
+            "cwd": "${workspaceFolder}/build",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\raylib\\w64devkit\\bin\\gdb.exe",
-            "preLaunchTask": "2. CMake Build (Debug)"
+            "preLaunchTask": "PRELAUNCH"
         }
     ]
 }
